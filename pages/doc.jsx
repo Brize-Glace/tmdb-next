@@ -5,6 +5,21 @@ import Head from "next/head";
 import BetaBadge from "./betaBadge";
 
 export default function doc() {
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      }
+    }
+  },[]);
+  const content = windowWidth < 640 ? "TMS" : "The Movie Search";
 return (
     <div>
 
@@ -23,7 +38,7 @@ return (
 
     <>
     <nav>
-            <h1>The Movie Search</h1>
+            <a href="/"><h1>{content}</h1></a>
             <ul>
               <li>
                 <a href="/">Home</a>
@@ -34,7 +49,6 @@ return (
               <li>
                 <a href="/top-rated-tv">TV & Series</a>
               </li>
-              <li></li>
             </ul>
           </nav>
     <h1 className="text-3xl text-center pt-7 font-bold">Documentation</h1>

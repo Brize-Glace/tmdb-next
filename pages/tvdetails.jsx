@@ -13,6 +13,7 @@ import BetaBadge from "./betaBadge";
 export default function TvDetails() {
   const [serie, setSeries] = useState({});
   const [similarShows, setSimilarShows] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(0);
   const [tvCredits, setTvCredits] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -67,7 +68,19 @@ export default function TvDetails() {
       year: "numeric",
     });
   };
-
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      }
+    }
+  },[]);
+  const content = windowWidth < 640 ? "TMS" : "The Movie Search";
   return (
     <div>
       <Head> 
@@ -89,7 +102,7 @@ export default function TvDetails() {
       ) : (
         <>
           <nav>
-          <h1>The Movie Search</h1>
+          <a href="/"><h1>{content}</h1></a>
           <ul>
             <li>
               <a href="/">Home</a>
@@ -100,47 +113,64 @@ export default function TvDetails() {
             <li>
               <a href="/top-rated-tv">TV & Series</a>
             </li>
-            <li></li>
           </ul>
         </nav>
           <div id="body">
             <div id="headerDetails">
-              <div className="relative w-screen h-[50vh] overflow-hidden m-0 p-0 flex">
-                <img
-                  className="absolute top-0 left-0 w-full h-full object-cover brightness-[.3]"
-                  src={`https://image.tmdb.org/t/p/w1280${serie.backdrop_path}`}
-                  alt={serie.title}
-                />
-                <img
-                  className="relative top-4 left-2 h-[350px] w-auto object-cover z-10"
-                  src={`https://image.tmdb.org/t/p/w500${serie.poster_path}`}
-                  alt={serie.title}
-                />
-                <div className="relative z-10 pt-9 pl-3 ml-4 max-w-3xl">
-                  <h1 className="text-4xl font-bold">{serie.name}</h1>
-                  <p className="pt-3 text-gray-300 italic">{serie.tagline === "" ? "No tagline found" : serie.tagline}</p>
-                  <p className="pt-3 pb-3">
-                    {formatDate(serie.first_air_date)}
-                  </p>
-                  {serie.status === "Returning Series" ? (
-                    <p className="bg-orange-600 bg-opacity-25 max-w-32 h-[30px] border border-orange-400 rounded-md flex items-center justify-center">
-                      {serie.status}
-                    </p>
-                  ) : serie.status === "Canceled" ? (
-                    <p className="bg-red-600 bg-opacity-25 max-w-24 h-[30px] border border-red-400 rounded-md flex items-center justify-center">
-                      {serie.status}
-                    </p>
+            <div id="headerDetails">
+                <div className="relative w-screen h-[90vh] overflow-hidden m-0 p-0 flex sm:h-[100%]">
+                  {serie.backdrop_path === null ? (
+                    <img
+                      className="absolute top-0 left-0 w-screen h-full object-cover brightness-[.3]"
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/434px-Unknown_person.jpg"
+                      alt={serie.title}
+                    />
                   ) : (
-                    <p className="bg-green-600 bg-opacity-25 max-w-14 h-[30px] border border-green-400 rounded-md flex items-center justify-center">
-                      {serie.status}
-                    </p>
+                    <img
+                      className="absolute top-0 left-0 w-screen h-full object-cover brightness-[.3] overflow-hidden"
+                      src={`https://image.tmdb.org/t/p/w1280${serie.backdrop_path}`}
+                      alt={serie.name}
+                    />
                   )}
-                  <p className="pt-3">{serie.vote_average} (of {serie.vote_count} total votes)</p>
-                  <p className="pt-3">
-                    Genres:{" "}
-                    {serie.genres &&
-                      serie.genres.map((genre) => genre.name).join(" | ")}
-                  </p>
+                  <div className="relative z-10 pt-9 ml-4 max-w-3xl flex w-[100%] flex-col sm:flex-row">
+                    {serie.poster_path === null ? (
+                      <img
+                        className="h-[350px] w-[230px] object-cover z-10 rounded-lg mx-auto sm:mx-0"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/434px-Unknown_person.jpg"
+                        alt={serie.name}
+                      />
+                    ) : (
+                      <img
+                        className="h-[350px] w-auto object-cover z-10 rounded-lg mx-auto mb-4 sm:mx-0"
+                        src={`https://image.tmdb.org/t/p/w500${serie.poster_path}`}
+                        alt={serie.name}
+                      />
+                    )}
+                    <div className="flex flex-col text-center sm:text-left pt-4 sm:pt-0 sm:pl-4">
+                      <h1 className="text-2xl md:text-4xl font-bold">{serie.name}</h1>
+                      <p className="pt-2 md:pt-3 text-gray-300 italic">
+                        {serie.tagline === "" ? "No tagline found" : serie.tagline}
+                      </p>
+                      <p className="pt-2 md:pt-3 pb-3">
+                        {serie.release_date === "" ? "No release date yet" : formatDate(serie.release_date)}
+                      </p>
+                      <p className={`max-w-24 h-[30px] border rounded-md flex items-center text-center justify-center mx-auto p-3 sm:justify-start sm:mx-0
+                      ${serie.status === "Released" 
+                        ? "bg-green-600 bg-opacity-25 border-green-400" 
+                        : serie.status === "Canceled" 
+                            ? "bg-red-600 bg-opacity-25 border-red-400" 
+                            : "bg-blue-600 bg-opacity-25 border-blue-400 max-w-[150px]"
+                    } `}>
+                        {serie.status}
+                      </p>
+                      <p className="pt-3">
+                        {serie.vote_count === 0 ? "No ratings yet" : `${serie.vote_average} (of ${serie.vote_count} votes)`}
+                      </p>
+                      <p className="pt-3 flex items-center text-center justify-center mx-auto pr-3">
+                        Genres: {serie.genres && serie.genres.map((genre) => genre.name).join(" | ")}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

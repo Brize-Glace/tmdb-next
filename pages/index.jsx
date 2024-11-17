@@ -8,6 +8,7 @@ export default function Home() {
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
   const [error, setError] = useState("");
+  const [windowWidth, setWindowWidth] = useState(0);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQueryMovie] = useState("");
   const [searchQuerySerie, setSearchQuerySerie] = useState("");
@@ -59,6 +60,7 @@ export default function Home() {
         .then((data) => setMovies(data.results))
         .catch((err) => setError("Failed to load movies"));
       document.getElementById("tv-container").style.display = "none";
+      document.getElementById("movies-container").style.display = "block";
     } else {
       router.push(`/?searchtv=${searchQuerySerie}`);
       fetch(`/api/searchtv?query=${searchQuerySerie}`)
@@ -66,6 +68,7 @@ export default function Home() {
         .then((data) => setSeries(data.results))
         .catch((err) => setError("Failed to load series"));
       document.getElementById("movies-container").style.display = "none";
+      document.getElementById("tv-container").style.display = "block";
     }
   };
 
@@ -92,6 +95,20 @@ export default function Home() {
 
   }
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      }
+    }
+  },[]);
+  const content = windowWidth < 640 ? "TMS" : "The Movie Search";
+
   return (
     <>
       <Head>
@@ -107,7 +124,7 @@ export default function Home() {
       </Head>
       <div className="scroll-smooth">
         <nav>
-          <h1>The Movie Search</h1>
+          <a href="/"><h1 className="ml-7">{content}</h1></a>
           <ul>
             <li id="selected">
               <a href="/">Home</a>
@@ -118,7 +135,6 @@ export default function Home() {
             <li>
               <a href="/top-rated-tv">TV & Series</a>
             </li>
-            <li></li>
           </ul>
         </nav>
 
@@ -182,7 +198,7 @@ export default function Home() {
               </a>
             </div>
             <div id="movies-container">
-              <h2 className="mb-6 ml-6">Popular Movies</h2>
+              <h2 className="mb-6 text-center">Popular Movies</h2>
               <div id="content-container">
                 {movies.length > 0 ? (
                   movies.map((movie) => (
@@ -198,12 +214,12 @@ export default function Home() {
                     </a>
                   ))
                 ) : (
-                  <p>No movies available</p>
+                  <p>No movies found</p>
                 )}
               </div>
             </div>
             <div className="hidden" id="tv-container">
-              <h2 className="mt-10 mb-6 ml-6">Popular TV Shows <BetaBadge text="NEW" /></h2>
+              <h2 className="mt-10 mb-6 text-center">Popular TV Shows <BetaBadge text="NEW" /></h2>
               <div id="content-container">
                 {series.length > 0 ? (
                   series.map((serie) => (
@@ -219,7 +235,7 @@ export default function Home() {
                     </a>
                   ))
                 ) : (
-                  <p>No series available</p>
+                  <p>No series found</p>
                 )}
               </div>
             </div>

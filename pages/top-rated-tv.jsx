@@ -6,6 +6,7 @@ import BetaBadge from "./betaBadge";
 
 export default function topRatedTv() {
   const [topratedtv, setSeries] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,6 +56,21 @@ export default function topRatedTv() {
       .then((data) => setSeries(data.results))
       .catch((err) => setError("Failed to load movies"));
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      }
+    }
+  },[]);
+  const content = windowWidth < 640 ? "TMS" : "The Movie Search";
+
   return (
     <div>
       <Head>
@@ -70,7 +86,7 @@ export default function topRatedTv() {
       </Head>
       <div>
         <nav>
-          <h1>The Movie Search</h1>
+        <a href="/"><h1>{content}</h1></a>
           <ul>
             <li>
               <a href="/">Home</a>
@@ -81,7 +97,6 @@ export default function topRatedTv() {
             <li id="selected">
                 <a href="/top-rated-tv">TV & Series</a>
             </li>
-            <li></li>
           </ul>
         </nav>
         {error && <p>{error}</p>}
@@ -105,7 +120,6 @@ export default function topRatedTv() {
             ></i>
           </button>
         </form>
-        
             <div>
             <h2 className="pl-5">Top Rated TV Shows & Series <BetaBadge text="NEW" /></h2>
           <div id="content-container">

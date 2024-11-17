@@ -5,6 +5,7 @@ import Head from "next/head";
 
 export default function topRatedMovies() {
   const [topratedmovies, setMovies] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,6 +55,19 @@ export default function topRatedMovies() {
       .then((data) => setMovies(data.results))
       .catch((err) => setError("Failed to load movies"));
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      }
+    }
+  },[]);
+  const content = windowWidth < 640 ? "TMS" : "The Movie Search";
   return (
     <>
       <Head>
@@ -69,7 +83,7 @@ export default function topRatedMovies() {
       </Head>
       <div>
         <nav>
-          <h1>The Movie Search</h1>
+        <a href="/"><h1>{content}</h1></a>
           <ul>
             <li>
               <a href="/">Home</a>
@@ -80,7 +94,6 @@ export default function topRatedMovies() {
             <li>
               <a href="/top-rated-tv">TV & Series</a>
             </li>
-            <li></li>
           </ul>
         </nav>
         {error && <p>{error}</p>}
