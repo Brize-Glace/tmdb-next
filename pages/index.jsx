@@ -241,26 +241,20 @@ export default function Home() {
             </div>
             <footer>
               <p className="p-7 text-gray-300 text-xs">
-                This site uses The Movie Database (TMDB) API to provide movie
-                information and images. Posters, cover art, and other images are
-                the property of their respective owners and are used under
-                license. This site is not affiliated with TMDB and complies with
-                the{" "}
+              This product uses the TMDB API but is not endorsed or certified by TMDB. The site provides movie information and images sourced from The Movie Database (TMDB) API. All posters, cover art, and other images are the property of their respective owners and are used under license. This site is not affiliated with TMDB and complies with the{" "}
                 <a
                   className="text-white font-bold"
                   href="https://www.themoviedb.org/api-terms-of-use"
                 >
                   TMDB API Terms of Use
                 </a>
-                . This site is not responsible for how users interact with its
-                content, including but not limited to spamming or misuse of the
-                API. Each user is solely responsible for their actions while
-                using the site. Additionally, the site cannot be held liable for
-                any malfunctions or unavailability due to major issues such as
-                technical problems or attacks.
+                . Users are solely responsible for their actions on the site, including but not limited to spamming or misuse of the API. The site cannot be held liable for any technical issues, unavailability, or malfunctions caused by major problems such as server failures or cyberattacks.
               </p>
               <p className="text-center pb-6">
                 &copy; The Movie Search - All Rights Reserved
+              </p>
+              <p className="text-center pb-4">
+                Made with ❤️ by <a href="https://github.com/Brize-Glace" target="_blank" className="font-bold">Romain</a>
               </p>
             </footer>
           </div>

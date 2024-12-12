@@ -137,7 +137,9 @@ export default function topRatedMovies() {
         </div>
         )}
       </div>
-      
+      <p className="text-center pb-4">
+                Made with ❤️ by <a href="https://github.com/Brize-Glace" target="_blank" className="font-bold">Romain</a>
+      </p>
     </>
   );
 }

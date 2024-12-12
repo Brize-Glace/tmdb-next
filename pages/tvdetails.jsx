@@ -68,6 +68,7 @@ export default function TvDetails() {
       year: "numeric",
     });
   };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWindowWidth(window.innerWidth);
@@ -81,6 +82,7 @@ export default function TvDetails() {
     }
   },[]);
   const content = windowWidth < 640 ? "TMS" : "The Movie Search";
+  
   return (
     <div>
       <Head> 
@@ -341,6 +343,9 @@ export default function TvDetails() {
               </div>
             </div>
           </div>
+          <p className="text-center pb-4">
+                Made with ❤️ by <a href="https://github.com/Brize-Glace" target="_blank" className="font-bold">Romain</a>
+          </p>
         </>
       )}
     </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import "../styles/globals.css";
 import Head from "next/head";
+import Script from 'next/script'
 
 export default function Actor() {
   const [actor, setActor] = useState(null);
@@ -65,6 +66,7 @@ export default function Actor() {
           href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
           rel="stylesheet"
         />
+        <Script src="https://kit.fontawesome.com/9b6f3a1221.js" crossorigin="anonymous"></Script>
         <link rel="icon" href="..//favicon.ico" />
       </Head>
       {loading ? (
@@ -98,9 +100,27 @@ export default function Actor() {
             />
             <h2 className="text-3xl font-bold mt-4 mx-24">Biography</h2>
             <p className="text-lg mt-4 px-32">{ actor.biography === "" ? "No biography" : actor.biography}</p>
-            <h2 className="text-3xl font-bold mt-4 mx-24">Others infos</h2>
+            <h2 className="text-3xl font-bold mt-12 mx-24">Others infos</h2>
             <p className="text-lg mt-4 px-32"> Born {formatDate(actor.birthday)} in {actor.place_of_birth}</p>
+            <p className="text-lg mt-4 px-32"> {actor.deathday ? `Died ${formatDate(actor.deathday)}` : "Deathday: actor alive"}</p>
+            <p className="text-lg mt-4 px-32"> Actor know as: </p>
+              {actor.also_known_as && actor.also_known_as.length > 0 ? (
+                <>
+                
+                <ul className="px-32">
+                  {actor.also_known_as.map((name) => (
+                    <li key={name}>- {name}</li>
+                  ))}
+                </ul>
+                </>
+              ): (
+                "know for nothing else."
+              )}
+            
           </div>
+          <p className="text-center pb-4">
+                Made with ❤️ by <a href="https://github.com/Brize-Glace" target="_blank" className="font-bold">Romain</a>
+          </p>
         </div>
       )}
     </div>
