@@ -1,6 +1,5 @@
-// tmdb-next/pages/api/similartv.js
 export default async function handler(req, res) {
-    const { id } = req.query; // Extract the TV show ID from the query parameters
+    const { id } = req.query; 
     const apiKey = process.env.TMDB_API_KEY;
     const url = `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${apiKey}&language=en-US&page=1`;
   
