@@ -98,23 +98,25 @@ export default function Actor() {
               alt={actor.name}
               className="rounded-3xl w-64 items-center justify-center mx-auto"
             />
-            <h2 className="text-3xl font-bold mt-4 mx-24">Biography</h2>
-            <p className="text-lg mt-4 px-32">{ actor.biography === "" ? "No biography" : actor.biography}</p>
-            <h2 className="text-3xl font-bold mt-12 mx-24">Others infos</h2>
-            <p className="text-lg mt-4 px-32"> Born {formatDate(actor.birthday)} in {actor.place_of_birth}</p>
-            <p className="text-lg mt-4 px-32"> {actor.deathday ? `Died ${formatDate(actor.deathday)}` : "Deathday: actor alive"}</p>
-            <p className="text-lg mt-4 px-32"> Actor know as: </p>
+            <h2 className="text-3xl font-bold mt-4 md:mx-24 mx-8">Biography</h2>
+            <p className="text-lg mt-4 md:px-32 px-12">{ actor.biography === "" ? "No biography" : actor.biography}</p>
+            <h2 className="text-3xl font-bold mt-12 md:mx-24 mx-8">Others infos</h2>
+            <p className="text-lg mt-4 md:px-32 px-12"> Born {formatDate(actor.birthday)} in {actor.place_of_birth}</p>
+            <p className="text-lg mt-4 md:px-32 px-12"> {actor.deathday ? `Died ${formatDate(actor.deathday)}` : "Deathday: actor alive"}</p>
+            <p className="text-lg mt-4 md:px-32 px-12"> Actor know as: </p>
               {actor.also_known_as && actor.also_known_as.length > 0 ? (
                 <>
                 
-                <ul className="px-32">
+                <ul className="md:px-32 mx-12 pb-12">
                   {actor.also_known_as.map((name) => (
                     <li key={name}>- {name}</li>
                   ))}
                 </ul>
                 </>
               ): (
-                "know for nothing else."
+                <p className="px-32">
+                know for nothing else.
+                </p>
               )}
             
           </div>

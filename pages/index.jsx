@@ -259,6 +259,9 @@ export default function Home() {
             </footer>
           </div>
         )}
+        <p className="text-center pb-6">
+          Servers status: <a href="https://the-moviesearch.betteruptime.com/" className="font-bold">here</a>
+        </p>
       </div>
     </>
   );

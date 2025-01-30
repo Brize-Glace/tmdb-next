@@ -41,10 +41,16 @@ nav li:hover{
 #search-form {
     display: flex;
     align-items: center;
-    max-width: 800px;
+    max-width: 600px;
     margin: 20px auto;
 }
-
+@media (max-width: 600px) {
+    #search-form {
+        max-width: 200px;
+        padding: 20px;
+        margin: 0;
+    }
+}
 #search-input {
     flex: 1;
     padding: 10px;
